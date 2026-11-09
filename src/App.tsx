@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-    <div className="absolute top-0 right-0 m-1">
+    <div className="absolute top-1 right-2">
       <ThemeSwitch />
     </div>
     <NavLink to="/search">Search</NavLink>
