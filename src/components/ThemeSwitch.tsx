@@ -25,12 +25,12 @@ export function ThemeSwitch() {
           },
         }}
         icon={
-          <div className="shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-full bg-primary-foreground h-6 w-6 flex justify-center items-center">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary-foreground shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
             <LightModeIcon fontSize="small" className="text-border-strong" />
           </div>
         }
         checkedIcon={
-          <div className="shadow-[0_2px_4px_rgba(0,0,0,0.1)] rounded-full bg-primary h-6 w-6 flex justify-center items-center">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary shadow-[0_2px_4px_rgba(0,0,0,0.1)]">
             <DarkModeIcon
               fontSize="small"
               className="text-primary-foreground"

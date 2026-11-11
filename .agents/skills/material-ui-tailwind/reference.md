@@ -17,7 +17,9 @@ Pages Router + GlobalStyles (first child of `AppCacheProvider`):
 
 ```json
 {
-  "tailwindCSS.experimental.classRegex": [["className\\s*:\\s*['\"]([^'\"]*)['\"]"]]
+  "tailwindCSS.experimental.classRegex": [
+    ["className\\s*:\\s*['\"]([^'\"]*)['\"]"]
+  ]
 }
 ```
 

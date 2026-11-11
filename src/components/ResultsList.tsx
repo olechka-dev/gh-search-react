@@ -1,23 +1,26 @@
-import type { RepoData } from "../types/repo.types";
-import { RepoItem } from "./RepoItem";
+import type { RepoData } from '../types/repo.types';
+import { RepoItem } from './RepoItem';
 
-export function ResultsList({repos}: {repos: RepoData[]}) {
+export function ResultsList({ repos }: { repos: RepoData[] }) {
+  // const repos = [
+  //     {name: 'Qwerty asdfg', description: 'Asdfg kdjtfgh dsug dkjfg'},
+  //     {name: 'Uhdbvf', description: 'Dbsdghfvs sdhfd usdhfiudh'},
 
-// const repos = [
-//     {name: 'Qwerty asdfg', description: 'Asdfg kdjtfgh dsug dkjfg'},
-//     {name: 'Uhdbvf', description: 'Dbsdghfvs sdhfd usdhfiudh'},
+  //     {name: 'Phjsbdcf asdfg', description: 'Zxcj irjgijrg'},
 
-//     {name: 'Phjsbdcf asdfg', description: 'Zxcj irjgijrg'},
+  //     {name: 'Lhjsbdf mxcmbfvyus drgdgd', description: 'Mbxncv eriugh ywhf hjsb h dihgfd dfightisygtugfs'},
 
-//     {name: 'Lhjsbdf mxcmbfvyus drgdgd', description: 'Mbxncv eriugh ywhf hjsb h dihgfd dfightisygtugfs'},
+  // ]; // mock
 
-// ]; // mock
-
-return (
+  return (
     <div className="flex flex-col gap-2">
-        {repos.map((item) => (
-            <RepoItem key={item.name} name={item.name} description={item.description}/>
-        ))}
+      {repos.map((item) => (
+        <RepoItem
+          key={item.name}
+          name={item.name}
+          description={item.description}
+        />
+      ))}
     </div>
-)
+  );
 }
