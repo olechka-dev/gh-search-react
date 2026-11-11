@@ -1,19 +1,19 @@
-import { createBrowserRouter, redirect } from "react-router";
-import App from "./App";
-import { SearchPage } from "./pages/SearchPage";
+import { createBrowserRouter, redirect } from 'react-router';
+import App from './App';
+import { SearchPage } from './pages/SearchPage';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     Component: App,
     children: [
       {
         index: true,
-        loader: () => redirect("/search"),
+        loader: () => redirect('/search'),
       },
       {
-        path: "search",
-        Component: SearchPage
+        path: 'search',
+        Component: SearchPage,
       },
     ],
   },

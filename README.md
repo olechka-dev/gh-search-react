@@ -76,7 +76,6 @@ export default defineConfig([
 
 
 TODO:
-- add theme switching
 - add ES lint and auto-fix
 - add pagination
 
