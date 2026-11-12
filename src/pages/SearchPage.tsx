@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import { ResultsList } from '../components/ResultsList';
 import { SearchField } from '../components/SearchField';
 import type { RepoDetails } from '../types/repo.types';
@@ -7,39 +7,73 @@ import { getRepos } from '../api/github';
 import { perPage } from '../constants/search.constants';
 import { ErrorMessage } from '../components/ErrorMessage';
 
+interface SearchState {
+  reposList: RepoDetails[];
+  term: string;
+  page: number;
+  pageCount: number;
+  errorMsg: string | null;
+}
+
+type SearchAction =
+  | {
+      type: 'SEARCH';
+      payload: { term: string; pageCount: number; reposList: RepoDetails[] };
+    }
+  | { type: 'PAGINATE'; payload: { reposList: RepoDetails[]; page: number } }
+  | { type: 'SET_ERROR'; payload: { errorMsg: string | null } };
+
+const initSearchState: SearchState = {
+  reposList: [],
+  term: '',
+  page: 1,
+  pageCount: 0,
+  errorMsg: null,
+};
+
+function searchReducer(state: SearchState, action: SearchAction) {
+  switch (action.type) {
+    case 'SEARCH':
+      return { ...state, ...action.payload, page: 1, errorMsg: null };
+
+    case 'PAGINATE':
+      return { ...state, ...action.payload, errorMsg: null };
+
+    case 'SET_ERROR':
+      return { ...state, reposList: [], errorMsg: action.payload.errorMsg };
+
+    default:
+      return state;
+  }
+}
+
 export function SearchPage() {
-  const [reposList, setReposList] = useState<RepoDetails[]>([]);
-  const [term, setTerm] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [state, dispatch] = useReducer(searchReducer, initSearchState);
 
   const handleSearch = async (val: string) => {
-    const curPage = 1;
     try {
-      const res = await getRepos(val, curPage);
+      const res = await getRepos(val, 1);
 
       const pageCnt = Math.ceil(res.count / perPage);
 
-      setReposList(res.repos);
-      setTerm(val);
-      setPage(curPage);
-      setPageCount(pageCnt);
-      setErrorMsg(null);
+      dispatch({
+        type: 'SEARCH',
+        payload: { term: val, pageCount: pageCnt, reposList: res.repos },
+      });
     } catch (e: any) {
-      setErrorMsg(e.message);
+      dispatch({ type: 'SET_ERROR', payload: { errorMsg: e.message } });
     }
   };
 
   const handlePagination = async (e, nextPage: number) => {
     try {
-      const res = await getRepos(term, nextPage);
-      console.log(res);
-      setReposList(res.repos);
-      setPage(nextPage);
-      setErrorMsg(null);
+      const res = await getRepos(state.term, nextPage);
+      dispatch({
+        type: 'PAGINATE',
+        payload: { page: nextPage, reposList: res.repos },
+      });
     } catch (e: any) {
-      setErrorMsg(e.message);
+      dispatch({ type: 'SET_ERROR', payload: { errorMsg: e.message } });
     }
   };
 
@@ -55,17 +89,17 @@ export function SearchPage() {
         <SearchField searchRepos={handleSearch} />
       </section>
       <section aria-label="Repository search results">
-        {errorMsg ? (
-          <ErrorMessage msg={errorMsg} />
+        {state.errorMsg ? (
+          <ErrorMessage msg={state.errorMsg} />
         ) : (
-          <ResultsList repos={reposList} />
+          <ResultsList repos={state.reposList} />
         )}
       </section>
-      {reposList.length > 0 && (
+      {state.reposList.length > 0 && (
         <section>
           <Paginator
-            page={page}
-            count={pageCount}
+            page={state.page}
+            count={state.pageCount}
             handlePageChange={handlePagination}
           />
         </section>
