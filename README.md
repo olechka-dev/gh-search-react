@@ -74,7 +74,8 @@ export default defineConfig([
 
 TODO:
 
-- add ES lint and auto-fix
-- add pagination
+- move search page state to reducer
+- use abort signal in fetch
+- move api call to tanstack query
 
 "https://api.github.com/search/repositories?q=tetris%20language:assembly&sort=stars&order=desc&page=1&per_page=25"

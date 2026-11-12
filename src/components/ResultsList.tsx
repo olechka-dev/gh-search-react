@@ -1,7 +1,7 @@
-import type { RepoData } from '../types/repo.types';
+import type { RepoDetails } from '../types/repo.types';
 import { RepoItem } from './RepoItem';
 
-export function ResultsList({ repos }: { repos: RepoData[] }) {
+export function ResultsList({ repos }: { repos: RepoDetails[] }) {
   // const repos = [
   //     {name: 'Qwerty asdfg', description: 'Asdfg kdjtfgh dsug dkjfg'},
   //     {name: 'Uhdbvf', description: 'Dbsdghfvs sdhfd usdhfiudh'},
