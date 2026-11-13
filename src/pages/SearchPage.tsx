@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useRef } from 'react';
 import { ResultsList } from '../components/ResultsList';
 import { SearchField } from '../components/SearchField';
 import type { RepoDetails } from '../types/repo.types';
@@ -48,11 +48,19 @@ function searchReducer(state: SearchState, action: SearchAction) {
 }
 
 export function SearchPage() {
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const [state, dispatch] = useReducer(searchReducer, initSearchState);
 
   const handleSearch = async (val: string) => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    abortControllerRef.current = new AbortController();
+
     try {
-      const res = await getRepos(val, 1);
+      const res = await getRepos(val, 1, abortControllerRef.current.signal);
 
       const pageCnt = Math.ceil(res.count / perPage);
 
@@ -66,8 +74,18 @@ export function SearchPage() {
   };
 
   const handlePagination = async (e, nextPage: number) => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    abortControllerRef.current = new AbortController();
+
     try {
-      const res = await getRepos(state.term, nextPage);
+      const res = await getRepos(
+        state.term,
+        nextPage,
+        abortControllerRef.current.signal
+      );
       dispatch({
         type: 'PAGINATE',
         payload: { page: nextPage, reposList: res.repos },

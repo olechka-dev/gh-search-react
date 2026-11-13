@@ -95,6 +95,10 @@
     @apply bg-background;
   }
 
+  #root {
+    display: flow-root;
+  }
+
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased;
   }

@@ -3,7 +3,8 @@ import type { ReposData } from '../types/repo.types';
 
 export const getRepos = async (
   term: string,
-  page: number
+  page: number,
+  abortSignal: AbortSignal
 ): Promise<ReposData> => {
   console.log('term', term);
   const params = {
@@ -14,7 +15,10 @@ export const getRepos = async (
     order: 'desc',
   };
   const response = await fetch(
-    repoSearchApi + '?' + new URLSearchParams(params)
+    repoSearchApi + '?' + new URLSearchParams(params),
+    {
+      signal: abortSignal,
+    }
   );
   if (!response.ok) {
     const text = await response.text();
