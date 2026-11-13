@@ -9,6 +9,7 @@ import { ErrorMessage } from '../components/ErrorMessage';
 
 interface SearchState {
   reposList: RepoDetails[];
+  isLoading: boolean;
   term: string;
   page: number;
   pageCount: number;
@@ -21,10 +22,12 @@ type SearchAction =
       payload: { term: string; pageCount: number; reposList: RepoDetails[] };
     }
   | { type: 'PAGINATE'; payload: { reposList: RepoDetails[]; page: number } }
-  | { type: 'SET_ERROR'; payload: { errorMsg: string | null } };
+  | { type: 'SET_ERROR'; payload: { errorMsg: string | null } }
+  | { type: 'SET_LOADING'; payload: { isLoading: boolean } };
 
 const initSearchState: SearchState = {
   reposList: [],
+  isLoading: false,
   term: '',
   page: 1,
   pageCount: 0,
@@ -34,13 +37,27 @@ const initSearchState: SearchState = {
 function searchReducer(state: SearchState, action: SearchAction) {
   switch (action.type) {
     case 'SEARCH':
-      return { ...state, ...action.payload, page: 1, errorMsg: null };
+      return {
+        ...state,
+        ...action.payload,
+        page: 1,
+        errorMsg: null,
+        isLoading: false,
+      };
 
     case 'PAGINATE':
-      return { ...state, ...action.payload, errorMsg: null };
+      return { ...state, ...action.payload, errorMsg: null, isLoading: false };
 
     case 'SET_ERROR':
-      return { ...state, reposList: [], errorMsg: action.payload.errorMsg };
+      return {
+        ...state,
+        reposList: [],
+        errorMsg: action.payload.errorMsg,
+        isLoading: false,
+      };
+
+    case 'SET_LOADING':
+      return { ...state, ...action.payload, errorMsg: null };
 
     default:
       return state;
@@ -58,6 +75,7 @@ export function SearchPage() {
     }
 
     abortControllerRef.current = new AbortController();
+    dispatch({ type: 'SET_LOADING', payload: { isLoading: true } });
 
     try {
       const res = await getRepos(val, 1, abortControllerRef.current.signal);
@@ -79,6 +97,7 @@ export function SearchPage() {
     }
 
     abortControllerRef.current = new AbortController();
+    dispatch({ type: 'SET_LOADING', payload: { isLoading: true } });
 
     try {
       const res = await getRepos(
@@ -110,7 +129,12 @@ export function SearchPage() {
         {state.errorMsg ? (
           <ErrorMessage msg={state.errorMsg} />
         ) : (
-          <ResultsList repos={state.reposList} />
+          <>
+            {state.isLoading && (
+              <div className="fixed h-10 w-full bg-gray-400"></div>
+            )}
+            <ResultsList repos={state.reposList} />
+          </>
         )}
       </section>
       {state.reposList.length > 0 && (
