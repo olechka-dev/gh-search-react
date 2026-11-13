@@ -97,10 +97,23 @@
 
   #root {
     display: flow-root;
+    position: relative;
   }
 
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -3rem;
+    right: -5rem;
+    width: clamp(22rem, 68vw, 50rem);
+    aspect-ratio: 1;
+    pointer-events: none;
+    background-color: color-mix(in srgb, var(--app-foreground) 5%, transparent);
+    mask: url('../assets/github-main.svg') center / contain no-repeat;
   }
 
   h1,

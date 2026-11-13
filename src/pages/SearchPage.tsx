@@ -129,12 +129,17 @@ export function SearchPage() {
         {state.errorMsg ? (
           <ErrorMessage msg={state.errorMsg} />
         ) : (
-          <>
-            {state.isLoading && (
-              <div className="fixed h-10 w-full bg-gray-400"></div>
+          <div className={state.isLoading ? 'relative min-h-32' : 'relative'}>
+            <div aria-busy={state.isLoading}>
+              <ResultsList repos={state.reposList} />
+            </div>
+            {state.isLoading && state.reposList.length > 0 && (
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-10 min-h-32 rounded-card bg-surface/40 backdrop-blur-[2px] backdrop-grayscale"
+              />
             )}
-            <ResultsList repos={state.reposList} />
-          </>
+          </div>
         )}
       </section>
       {state.reposList.length > 0 && (
