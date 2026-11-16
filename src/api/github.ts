@@ -26,6 +26,7 @@ export const getRepos = async (
   }
   const data = await response.json();
   const repos = data.items?.map((item: any) => ({
+    id: item.id,
     name: item.name,
     description: item.description,
     avatar: item.owner?.avatar_url,

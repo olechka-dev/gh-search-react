@@ -16,7 +16,7 @@ export function ResultsList({ repos }: { repos: RepoDetails[] }) {
     <div className="flex flex-col gap-2">
       {repos.map((item) => (
         <RepoItem
-          key={item.name}
+          key={item.id}
           name={item.name}
           description={item.description}
         />

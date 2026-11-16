@@ -1,6 +1,6 @@
 import type { RepoDetails } from '../types/repo.types';
 
-export function RepoItem({ name, description }: RepoDetails) {
+export function RepoItem({ name, description }: Omit<RepoDetails, 'id'>) {
   return (
     <article className="rounded-card border border-border bg-surface px-5 py-4 shadow-card transition-shadow hover:shadow-card-hover">
       <header>
