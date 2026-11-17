@@ -13,5 +13,6 @@ export interface ReposData {
 export interface PaginationProps {
   page: number;
   count: number;
+  isDisabled: boolean;
   handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 }

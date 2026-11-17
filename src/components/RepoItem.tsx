@@ -2,7 +2,7 @@ import type { RepoDetails } from '../types/repo.types';
 
 export function RepoItem({ name, description }: Omit<RepoDetails, 'id'>) {
   return (
-    <article className="rounded-card border border-border bg-surface px-5 py-4 shadow-card transition-shadow hover:shadow-card-hover">
+    <article className="h-20 rounded-card border border-border bg-surface px-5 py-4 shadow-card transition-shadow hover:shadow-card-hover">
       <header>
         <h2 className="text-base leading-snug font-semibold text-foreground">
           {name}

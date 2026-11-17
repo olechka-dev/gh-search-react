@@ -6,10 +6,20 @@ import './App.css';
 import { NavLink, Outlet } from 'react-router';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import CompassIcon from './assets/compass.svg?react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 2 * 60 * 1000,
+      gcTime: 2 * 60 * 1000,
+    },
+  },
+});
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       {/* <NavLink to="/search">Search</NavLink> */}
       <header className="mx-2.5 my-1.5 flex flex-row justify-between">
         <div className="flex items-center">
@@ -30,7 +40,7 @@ function App() {
       <main>
         <Outlet />
       </main>
-    </>
+    </QueryClientProvider>
   );
 }
 

@@ -3,15 +3,14 @@ import { useRef } from 'react';
 export function SearchField({
   searchRepos,
 }: {
-  searchRepos: (val: string) => Promise<void>;
+  searchRepos: (val: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onSearch = async () => {
     const val = inputRef.current?.value?.trim();
-    if (val) {
-      await searchRepos(val);
-    }
+
+    searchRepos(val ?? '');
   };
 
   return (

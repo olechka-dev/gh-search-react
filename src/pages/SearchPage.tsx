@@ -1,116 +1,45 @@
-import { useReducer, useRef } from 'react';
+import { useState } from 'react';
 import { ResultsList } from '../components/ResultsList';
 import { SearchField } from '../components/SearchField';
-import type { RepoDetails } from '../types/repo.types';
 import { Paginator } from '../components/Paginator';
 import { getRepos } from '../api/github';
 import { perPage } from '../constants/search.constants';
 import { ErrorMessage } from '../components/ErrorMessage';
-
-interface SearchState {
-  reposList: RepoDetails[];
-  isLoading: boolean;
-  term: string;
-  page: number;
-  pageCount: number;
-  errorMsg: string | null;
-}
-
-type SearchAction =
-  | {
-      type: 'SEARCH';
-      payload: { term: string; pageCount: number; reposList: RepoDetails[] };
-    }
-  | { type: 'PAGINATE'; payload: { reposList: RepoDetails[]; page: number } }
-  | { type: 'SET_ERROR'; payload: { errorMsg: string | null } }
-  | { type: 'SET_LOADING'; payload: { isLoading: boolean } };
-
-const initSearchState: SearchState = {
-  reposList: [],
-  isLoading: false,
-  term: '',
-  page: 1,
-  pageCount: 0,
-  errorMsg: null,
-};
-
-function searchReducer(state: SearchState, action: SearchAction) {
-  switch (action.type) {
-    case 'SEARCH':
-      return {
-        ...state,
-        ...action.payload,
-        page: 1,
-        errorMsg: null,
-        isLoading: false,
-      };
-
-    case 'PAGINATE':
-      return { ...state, ...action.payload, errorMsg: null, isLoading: false };
-
-    case 'SET_ERROR':
-      return {
-        ...state,
-        reposList: [],
-        errorMsg: action.payload.errorMsg,
-        isLoading: false,
-      };
-
-    case 'SET_LOADING':
-      return { ...state, ...action.payload, errorMsg: null };
-
-    default:
-      return state;
-  }
-}
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export function SearchPage() {
-  const abortControllerRef = useRef<AbortController | null>(null);
+  const [page, setPage] = useState(1);
+  const [term, setTerm] = useState('');
 
-  const [state, dispatch] = useReducer(searchReducer, initSearchState);
+  const queryClient = useQueryClient();
 
-  const handleSearch = async (val: string) => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+  const { isError, error, data, isPlaceholderData } = useQuery({
+    queryKey: ['repos', term, page],
+    queryFn: ({ signal }) => getRepos(term, page, signal),
+    enabled: term.trim().length > 0,
+    placeholderData: (previousData) => {
+      console.log('prev data', previousData);
+      return term.trim().length > 0
+        ? keepPreviousData(previousData)
+        : undefined;
+    },
+  });
 
-    abortControllerRef.current = new AbortController();
-    dispatch({ type: 'SET_LOADING', payload: { isLoading: true } });
+  const pageCount = Math.ceil((data?.count ?? 0) / perPage);
 
-    try {
-      const res = await getRepos(val, 1, abortControllerRef.current.signal);
-
-      const pageCnt = Math.ceil(res.count / perPage);
-
-      dispatch({
-        type: 'SEARCH',
-        payload: { term: val, pageCount: pageCnt, reposList: res.repos },
-      });
-    } catch (e: any) {
-      dispatch({ type: 'SET_ERROR', payload: { errorMsg: e.message } });
-    }
-  };
-
-  const handlePagination = async (e, nextPage: number) => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-
-    abortControllerRef.current = new AbortController();
-    dispatch({ type: 'SET_LOADING', payload: { isLoading: true } });
-
-    try {
-      const res = await getRepos(
-        state.term,
-        nextPage,
-        abortControllerRef.current.signal
+  const onTermChange = (val: string) => {
+    setTerm(val);
+    setPage(1);
+    if (!val) {
+      //queryClient.removeQueries({ queryKey: ['repos'] });
+      queryClient.setQueriesData(
+        { queryKey: ['repos'] },
+        { repos: [], count: 0 }
       );
-      dispatch({
-        type: 'PAGINATE',
-        payload: { page: nextPage, reposList: res.repos },
-      });
-    } catch (e: any) {
-      dispatch({ type: 'SET_ERROR', payload: { errorMsg: e.message } });
     }
   };
 
@@ -123,31 +52,41 @@ export function SearchPage() {
         <h1 id="search-page-title">Explore repositories on GitHub</h1>
       </header>
       <section aria-label="Search field">
-        <SearchField searchRepos={handleSearch} />
+        <SearchField searchRepos={onTermChange} />
       </section>
       <section aria-label="Repository search results">
-        {state.errorMsg ? (
-          <ErrorMessage msg={state.errorMsg} />
+        {isError ? (
+          <ErrorMessage msg={error.message} />
         ) : (
-          <div className={state.isLoading ? 'relative min-h-32' : 'relative'}>
-            <div aria-busy={state.isLoading}>
-              <ResultsList repos={state.reposList} />
+          <div
+            className={
+              isPlaceholderData && !!data.repos.length
+                ? 'relative min-h-20'
+                : 'relative'
+            }
+          >
+            <div aria-busy={isPlaceholderData && !!data?.repos.length}>
+              <ResultsList repos={data?.repos || []} />
             </div>
-            {state.isLoading && state.reposList.length > 0 && (
+            {isPlaceholderData && !!data?.repos.length && (
               <div
                 aria-hidden="true"
-                className="absolute inset-0 z-10 min-h-32 rounded-card bg-surface/40 backdrop-blur-[2px] backdrop-grayscale"
+                className="absolute inset-0 z-10 min-h-20 rounded-card bg-surface/40 backdrop-blur-[2px] backdrop-grayscale"
               />
             )}
           </div>
         )}
       </section>
-      {state.reposList.length > 0 && (
+      {/* use isMemo for calculation? */}
+      {!!data?.repos.length && pageCount > 1 && (
         <section>
           <Paginator
-            page={state.page}
-            count={state.pageCount}
-            handlePageChange={handlePagination}
+            page={page}
+            isDisabled={isPlaceholderData}
+            count={pageCount}
+            handlePageChange={(e, nextPage) => {
+              setPage(nextPage);
+            }}
           />
         </section>
       )}
