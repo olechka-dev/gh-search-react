@@ -12,6 +12,7 @@ export function ThemeSwitch() {
     <>
       <Switch
         checked={effectiveMode === 'dark'}
+        slotProps={{ input: { 'aria-label': 'Dark mode' } }}
         onChange={(event) => {
           setMode(event.target.checked ? 'dark' : 'light');
         }}
