@@ -16,9 +16,11 @@ export function ResultsList({ repos }: { repos: RepoDetails[] }) {
     <div className="flex flex-col gap-2">
       {repos.map((item) => (
         <RepoItem
-          key={item.id}
+          // if item.avatar changes we need to remount RepoItem to rerun useState(avatar || greyPlaceholder) inside it
+          key={item.id + (item.avatar ?? '')}
           name={item.name}
           description={item.description}
+          avatar={item.avatar}
         />
       ))}
     </div>

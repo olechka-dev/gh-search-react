@@ -11,7 +11,7 @@ export interface RawRepoDetails {
   description: string;
   owner: {
     avatar_url?: string;
-  }
+  };
 }
 
 export interface ReposData {
