@@ -5,25 +5,21 @@ import { Paginator } from '../components/Paginator';
 import { getRepos } from '../api/github';
 import { perPage } from '../constants/search.constants';
 import { ErrorMessage } from '../components/ErrorMessage';
-import {
-  keepPreviousData,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import DotsLoader from './../assets/loader.svg?react';
+import { NoResults } from '../components/NoResults';
 
 export function SearchPage() {
   const [page, setPage] = useState(1);
   const [term, setTerm] = useState('');
 
-  const queryClient = useQueryClient();
-
-  const { isError, error, data, isPlaceholderData } = useQuery({
+  const { isError, error, data, isPlaceholderData, isPending } = useQuery({
     queryKey: ['repos', term, page],
     queryFn: ({ signal }) => getRepos(term, page, signal),
     enabled: term.trim().length > 0,
-    placeholderData: (previousData) => {
-      console.log('prev data', previousData);
-      return term.trim().length > 0
+    placeholderData: (previousData, previousQuery) => {
+      console.log('prev data', previousData, previousQuery);
+      return term.length > 0 && term === previousQuery?.queryKey[1]
         ? keepPreviousData(previousData)
         : undefined;
     },
@@ -34,13 +30,6 @@ export function SearchPage() {
   const onTermChange = (val: string) => {
     setTerm(val);
     setPage(1);
-    if (!val) {
-      //queryClient.removeQueries({ queryKey: ['repos'] });
-      queryClient.setQueriesData(
-        { queryKey: ['repos'] },
-        { repos: [], count: 0 }
-      );
-    }
   };
 
   return (
@@ -57,6 +46,10 @@ export function SearchPage() {
       <section aria-label="Repository search results">
         {isError ? (
           <ErrorMessage msg={error.message} />
+        ) : isPending && term ? (
+          <DotsLoader className="mx-auto h-8 w-8 text-foreground-muted" />
+        ) : !data?.repos?.length && !isPending ? (
+          <NoResults term={term} />
         ) : (
           <div
             className={
@@ -77,14 +70,13 @@ export function SearchPage() {
           </div>
         )}
       </section>
-      {/* use isMemo for calculation? */}
       {!!data?.repos.length && pageCount > 1 && (
         <section>
           <Paginator
             page={page}
             isDisabled={isPlaceholderData}
             count={pageCount}
-            handlePageChange={(e, nextPage) => {
+            handlePageChange={(_e, nextPage) => {
               setPage(nextPage);
             }}
           />

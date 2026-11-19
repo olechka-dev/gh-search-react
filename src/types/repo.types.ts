@@ -5,6 +5,15 @@ export interface RepoDetails {
   avatar?: string;
 }
 
+export interface RawRepoDetails {
+  id: number;
+  name: string;
+  description: string;
+  owner: {
+    avatar_url?: string;
+  }
+}
+
 export interface ReposData {
   repos: RepoDetails[];
   count: number;

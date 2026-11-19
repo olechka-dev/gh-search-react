@@ -1,5 +1,5 @@
 import { perPage, repoSearchApi } from '../constants/search.constants';
-import type { ReposData } from '../types/repo.types';
+import type { RawRepoDetails, ReposData } from '../types/repo.types';
 
 export const getRepos = async (
   term: string,
@@ -25,7 +25,7 @@ export const getRepos = async (
     throw new Error(response.status + ' ' + text);
   }
   const data = await response.json();
-  const repos = data.items?.map((item: any) => ({
+  const repos = data.items?.map((item: RawRepoDetails) => ({
     id: item.id,
     name: item.name,
     description: item.description,

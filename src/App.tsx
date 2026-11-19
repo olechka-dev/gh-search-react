@@ -3,7 +3,7 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from './assets/vite.svg'
 import './App.css';
-import { NavLink, Outlet } from 'react-router';
+import { Outlet } from 'react-router';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import CompassIcon from './assets/compass.svg?react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
