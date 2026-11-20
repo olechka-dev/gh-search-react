@@ -29,5 +29,11 @@ export const theme = createTheme({
     MuiPaper: {
       styleOverrides: { rounded: { borderRadius: 'var(--radius-card)' } },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: { backgroundColor: 'var(--app-surface)' },
+        select: { display: 'flex' },
+      },
+    },
   },
 });

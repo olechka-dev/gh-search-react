@@ -1,18 +1,24 @@
 import { perPage, repoSearchApi } from '../constants/search.constants';
-import type { RawRepoDetails, ReposData } from '../types/repo.types';
+import type {
+  RawRepoDetails,
+  ReposData,
+  SortDirection,
+  SortOptions,
+} from '../types/repo.types';
 
 export const getRepos = async (
   term: string,
   page: number,
+  sort: SortOptions,
+  order: SortDirection,
   abortSignal: AbortSignal
 ): Promise<ReposData> => {
-  console.log('term', term);
   const params = {
     q: term,
     page: page.toString(),
     per_page: perPage.toString(),
-    sort: 'stars',
-    order: 'desc',
+    sort,
+    order,
   };
   const response = await fetch(
     repoSearchApi + '?' + new URLSearchParams(params),
@@ -30,11 +36,12 @@ export const getRepos = async (
     name: item.name,
     description: item.description,
     avatar: item.owner?.avatar_url,
-    repoUrl: item.html_url
+    repoUrl: item.html_url,
   }));
   console.log(repos);
   return {
     repos,
     count: data.total_count < 1000 ? data.total_count : 1000, // Only the first 1000 search results are available from api
+    total: data.total_count,
   };
 };

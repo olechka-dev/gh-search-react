@@ -18,12 +18,12 @@ export interface RawRepoDetails {
 
 export interface ReposData {
   repos: RepoDetails[];
-  count: number;
+  count: number; // for pagination which supports max 1000 results
+  total: number; // total count existing in github
 }
 
-export interface PaginationProps {
-  page: number;
-  count: number;
-  isDisabled: boolean;
-  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
-}
+
+export type SortOptions = 'stars' | 'forks' | 'help-wanted-issues' | 'updated';
+
+export type SortDirection = 'asc' | 'desc';
+

@@ -8,14 +8,19 @@ import { ErrorMessage } from '../components/ErrorMessage';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import DotsLoader from './../assets/loader.svg?react';
 import { NoResults } from '../components/NoResults';
+import { SortPanel } from '../components/SortPanel';
+import type { SortDirection, SortOptions } from '../types/repo.types';
 
 export function SearchPage() {
   const [page, setPage] = useState(1);
   const [term, setTerm] = useState('');
+  const [sort, setSort] = useState<SortOptions>('stars');
+  const [direction, setDirection] = useState<SortDirection>('asc');
+
 
   const { isError, error, data, isPlaceholderData, isPending } = useQuery({
-    queryKey: ['repos', term, page],
-    queryFn: ({ signal }) => getRepos(term, page, signal),
+    queryKey: ['repos', term, page, sort, direction],
+    queryFn: ({ signal }) => getRepos(term, page, sort, direction, signal),
     enabled: term.trim().length > 0,
     placeholderData: (previousData, previousQuery) => {
       console.log('prev data', previousData, previousQuery);
@@ -35,13 +40,24 @@ export function SearchPage() {
   return (
     <section
       aria-labelledby="search-page-title"
-      className="mx-auto my-9 flex w-4/5 flex-col gap-9 min-[721px]:w-[650px]"
+      className="mx-auto my-9 flex w-4/5 flex-col gap-5 min-[721px]:w-[650px]"
     >
       <header>
         <h1 id="search-page-title">Explore repositories on GitHub</h1>
       </header>
       <section aria-label="Search field">
         <SearchField searchRepos={onTermChange} />
+      </section>
+      <section aria-label="Sort panel">
+        {!!data?.total && (
+          <SortPanel
+            reposTotalCount={data?.total}
+            sortBy={sort}
+            onSortChange={setSort}
+            direction={direction}
+            onDirectionChange={setDirection}
+          />
+        )}
       </section>
       <section aria-label="Repository search results">
         {isError ? (

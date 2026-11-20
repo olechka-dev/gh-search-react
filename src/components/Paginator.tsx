@@ -1,5 +1,11 @@
 import { Pagination } from '@mui/material';
-import type { PaginationProps } from '../types/repo.types';
+
+interface PaginationProps {
+  page: number;
+  count: number;
+  isDisabled: boolean;
+  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
+}
 
 export function Paginator({
   page,
