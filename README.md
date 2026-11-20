@@ -74,6 +74,7 @@ export default defineConfig([
 
 TODO:
 
-- make repo item clickable
+- add sorting 
+- update favicon
 
 "https://api.github.com/search/repositories?q=tetris%20language:assembly&sort=stars&order=desc&page=1&per_page=25"
