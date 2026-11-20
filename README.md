@@ -75,6 +75,5 @@ export default defineConfig([
 TODO:
 
 - make repo item clickable
-- add avatar for each repo
 
 "https://api.github.com/search/repositories?q=tetris%20language:assembly&sort=stars&order=desc&page=1&per_page=25"

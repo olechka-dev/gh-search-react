@@ -3,12 +3,14 @@ export interface RepoDetails {
   name: string;
   description: string;
   avatar?: string;
+  repoUrl: string;
 }
 
 export interface RawRepoDetails {
   id: number;
   name: string;
   description: string;
+  html_url: string;
   owner: {
     avatar_url?: string;
   };

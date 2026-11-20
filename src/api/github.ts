@@ -30,6 +30,7 @@ export const getRepos = async (
     name: item.name,
     description: item.description,
     avatar: item.owner?.avatar_url,
+    repoUrl: item.html_url
   }));
   console.log(repos);
   return {
