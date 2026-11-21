@@ -35,5 +35,14 @@ export const theme = createTheme({
         select: { display: 'flex' },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderWidth: '1px',
+          },
+        },
+      },
+    },
   },
 });

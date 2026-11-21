@@ -45,6 +45,15 @@ export function SortPanel({
               onSortChange(e.target.value);
             }}
             inputProps={{ 'aria-label': 'Sort by' }}
+            MenuProps={{
+              slotProps: {
+                paper: {
+                  sx: {
+                    mt: '8px',
+                  },
+                },
+              },
+            }}
           >
             {(Object.keys(sortLabels) as SortOptions[]).map((key) => {
               const Icon = sortIcons[key];

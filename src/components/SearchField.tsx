@@ -1,32 +1,44 @@
-import { useRef } from 'react';
+import { Button, TextField } from '@mui/material';
+import { useState } from 'react';
 
 export function SearchField({
   searchRepos,
 }: {
   searchRepos: (val: string) => void;
 }) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [term, setTerm] = useState('');
 
   return (
     <form
-      className="flex w-full overflow-hidden rounded-control border border-border bg-surface shadow-card focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+      className="flex w-full"
+      autoComplete="off"
+      noValidate
       onSubmit={(event) => {
         event.preventDefault();
-        searchRepos(inputRef.current?.value.trim() ?? '');
+        searchRepos(term);
       }}
     >
-      <input
+      <TextField
+        value={term}
+        onChange={(event) => {
+          setTerm(event.target.value);
+        }}
+        id="Search repositories"
         aria-label="Search repositories"
-        className="min-w-0 flex-1 rounded-none border-0 bg-transparent px-4 shadow-none focus:border-0 focus:outline-none"
-        placeholder="Find a repository..."
-        ref={inputRef}
+        label="Find repositories"
+        type="search"
+        size="small"
+        fullWidth
       />
-      <button
-        className="shrink-0 rounded-none border-0 bg-primary px-6 text-primary-foreground shadow-none hover:border-0 hover:bg-primary-hover focus-visible:outline-primary-foreground"
+      <Button
+        variant="contained"
+        sx={{
+          width: '120px',
+        }}
         type="submit"
       >
         Search
-      </button>
+      </Button>
     </form>
   );
 }
