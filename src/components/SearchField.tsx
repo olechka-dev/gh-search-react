@@ -25,15 +25,25 @@ export function SearchField({
         }}
         id="Search repositories"
         aria-label="Search repositories"
-        label="Find repositories"
+        placeholder="Find repositories"
         type="search"
         size="small"
         fullWidth
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        }}
       />
       <Button
         variant="contained"
+        size="small"
         sx={{
           width: '120px',
+          flexShrink: 0,
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
         }}
         type="submit"
       >

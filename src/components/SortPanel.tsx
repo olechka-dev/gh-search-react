@@ -59,7 +59,14 @@ export function SortPanel({
               const Icon = sortIcons[key];
               return (
                 <MenuItem value={key}>
-                  <ListItemIcon className="mr-1.5 inline-flex min-w-2.5 items-center">
+                  <ListItemIcon
+                    sx={{
+                      mr: 0.75,
+                      display: 'inline-flex',
+                      minWidth: 10,
+                      alignItems: 'center',
+                    }}
+                  >
                     <Icon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText>{sortLabels[key as SortOptions]}</ListItemText>
@@ -69,26 +76,27 @@ export function SortPanel({
           </Select>
         </FormControl>
 
-        <ButtonGroup size="small" disableElevation aria-label="Sort direction">
+        <ButtonGroup size="small" aria-label="Sort direction">
           {(Object.keys(directionIcons) as SortDirection[]).map((key) => {
             const Icon = directionIcons[key];
+            const isSelected = key === direction;
+            const backgroundColor = isSelected
+              ? 'primary.main'
+              : 'background.paper';
             return (
               <Button
                 aria-label={key}
                 variant="contained"
-                className={key === direction ? 'bg-primary' : 'bg-surface'}
+                sx={{
+                  bgcolor: backgroundColor,
+                  color: isSelected ? 'primary.contrastText' : 'text.primary',
+                  '&:hover': { bgcolor: backgroundColor },
+                }}
                 onClick={() => {
                   onDirectionChange(key);
                 }}
               >
-                <Icon
-                  className={
-                    key === direction
-                      ? 'text-primary-foreground'
-                      : 'text-foreground'
-                  }
-                  fontSize="small"
-                />
+                <Icon fontSize="small" />
               </Button>
             );
           })}

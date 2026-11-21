@@ -25,7 +25,26 @@ export const theme = createTheme({
   typography: { fontFamily: 'var(--font-sans)' },
   shape: { borderRadius: 8 },
   components: {
-    MuiButton: { styleOverrides: { root: { textTransform: 'none' } } },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          boxShadow: 'var(--shadow-card)',
+          '&:hover, &:active, &.Mui-focusVisible': {
+            boxShadow: 'var(--shadow-card)',
+          },
+        },
+        sizeSmall: { height: 40 },
+      },
+    },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'var(--shadow-card)',
+          variants: [{ props: { size: 'small' }, style: { height: 40 } }],
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: { rounded: { borderRadius: 'var(--radius-card)' } },
     },
@@ -35,12 +54,42 @@ export const theme = createTheme({
         select: { display: 'flex' },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          variants: [
+            {
+              props: { size: 'small', multiline: false },
+              style: { height: 40 },
+            },
+          ],
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          backgroundColor: 'var(--app-surface)',
+          boxShadow: 'var(--shadow-card)',
+          '&.MuiInputBase-sizeSmall input.MuiOutlinedInput-input': {
+            boxSizing: 'border-box',
+            height: '100%',
+            paddingBlock: 0,
+            paddingBottom: '2px',
+          },
+          '&:hover:not(.Mui-disabled):not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'var(--app-border-strong)',
+          },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderWidth: '1px',
           },
+        },
+        notchedOutline: { borderColor: 'var(--app-border)' },
+        input: {
+          height: 'auto',
+          border: 0,
+          borderRadius: 0,
+          backgroundColor: 'transparent',
         },
       },
     },
