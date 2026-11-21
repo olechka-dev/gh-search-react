@@ -15,8 +15,7 @@ export function SearchPage() {
   const [page, setPage] = useState(1);
   const [term, setTerm] = useState('');
   const [sort, setSort] = useState<SortOptions>('stars');
-  const [direction, setDirection] = useState<SortDirection>('asc');
-
+  const [direction, setDirection] = useState<SortDirection>('desc');
 
   const { isError, error, data, isPlaceholderData, isPending } = useQuery({
     queryKey: ['repos', term, page, sort, direction],

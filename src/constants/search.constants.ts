@@ -5,6 +5,8 @@ import ReportOutlinedIcon from '@mui/icons-material/ReportOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import type { ComponentType } from 'react';
 import type { SvgIconProps } from '@mui/material';
+import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
+import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 
 export const repoSearchApi = 'https://api.github.com/search/repositories';
 
@@ -28,3 +30,10 @@ export const sortIcons: Record<SortOptions, ComponentType<SvgIconProps>> = {
   updated: CalendarTodayOutlinedIcon,
 };
 
+export const directionIcons: Record<
+  SortDirection,
+  ComponentType<SvgIconProps>
+> = {
+  asc: ArrowUpwardRoundedIcon,
+  desc: ArrowDownwardRoundedIcon,
+};

@@ -76,4 +76,8 @@ TODO:
 
 - add sorting 
 
+Q:
+- list all ways to override the current css styling of MUI select component like default height, border
+- sortpanel: component breakdown and state management, is there a better approach? what if component has a lot of properties?
+
 "https://api.github.com/search/repositories?q=tetris%20language:assembly&sort=stars&order=desc&page=1&per_page=25"

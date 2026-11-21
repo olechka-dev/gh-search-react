@@ -1,4 +1,6 @@
 import {
+  Button,
+  ButtonGroup,
   FormControl,
   ListItemIcon,
   ListItemText,
@@ -6,7 +8,11 @@ import {
   Select,
 } from '@mui/material';
 import type { SortDirection, SortOptions } from '../types/repo.types';
-import { sortLabels, sortIcons } from '../constants/search.constants';
+import {
+  sortLabels,
+  sortIcons,
+  directionIcons,
+} from '../constants/search.constants';
 
 interface SortPanelProps {
   reposTotalCount: number;
@@ -53,6 +59,31 @@ export function SortPanel({
             })}
           </Select>
         </FormControl>
+
+        <ButtonGroup size="small" disableElevation aria-label="Sort direction">
+          {(Object.keys(directionIcons) as SortDirection[]).map((key) => {
+            const Icon = directionIcons[key];
+            return (
+              <Button
+                aria-label={key}
+                variant="contained"
+                className={key === direction ? 'bg-primary' : 'bg-surface'}
+                onClick={() => {
+                  onDirectionChange(key);
+                }}
+              >
+                <Icon
+                  className={
+                    key === direction
+                      ? 'text-primary-foreground'
+                      : 'text-foreground'
+                  }
+                  fontSize="small"
+                />
+              </Button>
+            );
+          })}
+        </ButtonGroup>
       </div>
     </div>
   );
