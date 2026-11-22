@@ -38,7 +38,6 @@ export const getRepos = async (
     avatar: item.owner?.avatar_url,
     repoUrl: item.html_url,
   }));
-  console.log(repos);
   return {
     repos,
     count: data.total_count < 1000 ? data.total_count : 1000, // Only the first 1000 search results are available from api

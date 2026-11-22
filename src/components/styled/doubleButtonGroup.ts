@@ -2,32 +2,29 @@ import { Button, ButtonGroup } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface HalfButtonProps {
-  backgroundColor: string;
   isSelected: boolean;
 }
 
 export const HalfButton = styled(Button, {
   shouldForwardProp: (prop) =>
     !(
-      [
-        'backgroundColor',
-        'isSelected',
-        'ownerState',
-        'theme',
-        'sx',
-        'as',
-      ] as PropertyKey[]
+      ['isSelected', 'ownerState', 'theme', 'sx', 'as'] as PropertyKey[]
     ).includes(prop),
-})<HalfButtonProps>(({ backgroundColor, isSelected, theme }) => ({
-  backgroundColor,
-  color: isSelected
-    ? theme.palette.primary.contrastText
-    : theme.palette.text.primary,
-  '&:hover': {
+})<HalfButtonProps>(({ isSelected, theme }) => {
+  const backgroundColor = isSelected
+    ? 'var(--app-primary)'
+    : 'var(--app-surface)';
+  return {
     backgroundColor,
-    borderColor: theme.palette.secondary.dark,
-  },
-}));
+    color: isSelected
+      ? theme.palette.primary.contrastText
+      : theme.palette.text.primary,
+    '&:hover': {
+      backgroundColor,
+      borderColor: theme.palette.secondary.dark,
+    },
+  };
+});
 
 export const DoubleButtonGroup = styled(ButtonGroup)({
   borderColor: 'var(--app-border)',

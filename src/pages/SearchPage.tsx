@@ -22,7 +22,6 @@ export function SearchPage() {
     queryFn: ({ signal }) => getRepos(term, page, sort, direction, signal),
     enabled: term.trim().length > 0,
     placeholderData: (previousData, previousQuery) => {
-      console.log('prev data', previousData, previousQuery);
       return term.length > 0 && term === previousQuery?.queryKey[1]
         ? keepPreviousData(previousData)
         : undefined;
@@ -31,9 +30,11 @@ export function SearchPage() {
 
   const pageCount = Math.ceil((data?.count ?? 0) / perPage);
 
-  const onTermChange = (val: string) => {
-    setTerm(val);
-    setPage(1);
+  const onGetReposArgumentChange = (func: (v: any) => void) => {
+    return (val: any) => {
+      func(val);
+      setPage(1);
+    };
   };
 
   return (
@@ -45,16 +46,16 @@ export function SearchPage() {
         <h1 id="search-page-title">Explore repositories on GitHub</h1>
       </header>
       <section aria-label="Search field">
-        <SearchField searchRepos={onTermChange} />
+        <SearchField searchRepos={onGetReposArgumentChange(setTerm)} />
       </section>
       <section aria-label="Sort panel">
         {!!data?.total && (
           <SortPanel
             reposTotalCount={data?.total}
             sortBy={sort}
-            onSortChange={setSort}
+            onSortChange={onGetReposArgumentChange(setSort)}
             direction={direction}
-            onDirectionChange={setDirection}
+            onDirectionChange={onGetReposArgumentChange(setDirection)}
           />
         )}
       </section>

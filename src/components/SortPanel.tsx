@@ -58,7 +58,7 @@ export function SortPanel({
             {(Object.keys(sortLabels) as SortOptions[]).map((key) => {
               const Icon = sortIcons[key];
               return (
-                <MenuItem value={key}>
+                <MenuItem key={key} value={key}>
                   <ListItemIcon
                     sx={{
                       mr: 0.75,
@@ -80,14 +80,12 @@ export function SortPanel({
           {(Object.keys(directionIcons) as SortDirection[]).map((key) => {
             const Icon = directionIcons[key];
             const isSelected = key === direction;
-            const backgroundColor = isSelected
-              ? 'var(--app-primary)'
-              : 'var(--app-surface)';
             return (
               <HalfButton
+                key={key}
                 aria-label={key}
+                aria-pressed={isSelected}
                 variant="contained"
-                backgroundColor={backgroundColor}
                 isSelected={isSelected}
                 onClick={() => {
                   onDirectionChange(key);

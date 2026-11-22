@@ -22,8 +22,6 @@ export interface ReposData {
   total: number; // total count existing in github
 }
 
-
 export type SortOptions = 'stars' | 'forks' | 'help-wanted-issues' | 'updated';
 
 export type SortDirection = 'asc' | 'desc';
-

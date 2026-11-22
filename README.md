@@ -72,10 +72,4 @@ export default defineConfig([
 ]);
 ```
 
-TODO:
 
-
-Q:
-- sortpanel: component breakdown and state management, is there a better approach? what if component has a lot of properties?
-
-"https://api.github.com/search/repositories?q=tetris%20language:assembly&sort=stars&order=desc&page=1&per_page=25"

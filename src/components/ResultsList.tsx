@@ -2,8 +2,6 @@ import type { RepoDetails } from '../types/repo.types';
 import { RepoItem } from './RepoItem';
 
 export function ResultsList({ repos }: { repos: RepoDetails[] }) {
-
-
   return (
     <div className="flex flex-col gap-2">
       {repos.map((item) => (
