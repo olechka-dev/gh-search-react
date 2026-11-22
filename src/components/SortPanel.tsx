@@ -46,6 +46,7 @@ export function SortPanel({
             }}
             inputProps={{ 'aria-label': 'Sort by' }}
             MenuProps={{
+              disableScrollLock: true,
               slotProps: {
                 paper: {
                   sx: {
@@ -76,7 +77,21 @@ export function SortPanel({
           </Select>
         </FormControl>
 
-        <ButtonGroup size="small" aria-label="Sort direction">
+        <ButtonGroup
+          size="small"
+          aria-label="Sort direction"
+          sx={{
+            borderColor: 'var(--app-border)',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            '& .MuiButtonGroup-grouped': {
+              height: '100%',
+            },
+            '&:hover': {
+              borderColor: 'var(--app-border-strong)',
+            },
+          }}
+        >
           {(Object.keys(directionIcons) as SortDirection[]).map((key) => {
             const Icon = directionIcons[key];
             const isSelected = key === direction;
@@ -89,8 +104,12 @@ export function SortPanel({
                 variant="contained"
                 sx={{
                   bgcolor: backgroundColor,
+
                   color: isSelected ? 'primary.contrastText' : 'text.primary',
-                  '&:hover': { bgcolor: backgroundColor },
+                  '&:hover': {
+                    bgcolor: backgroundColor,
+                    borderColor: 'var(--app-border-strong)',
+                  },
                 }}
                 onClick={() => {
                   onDirectionChange(key);

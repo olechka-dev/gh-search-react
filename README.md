@@ -74,7 +74,8 @@ export default defineConfig([
 
 TODO:
 
-- add sorting 
+- styled component for btn group
+- fix overlay removing scrollbar
 
 Q:
 - list all ways to override the current css styling of MUI select component like default height, border

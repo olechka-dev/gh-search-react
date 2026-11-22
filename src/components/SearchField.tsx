@@ -42,6 +42,7 @@ export function SearchField({
         sx={{
           width: '120px',
           flexShrink: 0,
+          fontSize: '16px',
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: 0,
         }}
