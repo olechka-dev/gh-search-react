@@ -7,6 +7,11 @@ const palette = {
     dark: 'var(--app-primary-hover)',
     contrastText: 'var(--app-primary-foreground)',
   },
+  secondary: {
+    main: 'var(--app-border)',
+    light: 'var(--app-border)',
+    dark: 'var(--app-border-strong)',
+  },
   success: { main: 'var(--app-success)' },
   warning: { main: 'var(--app-warning)' },
   error: { main: 'var(--app-danger)' },
@@ -77,9 +82,10 @@ export const theme = createTheme({
             paddingBlock: 0,
             paddingBottom: '2px',
           },
-          '&:hover:not(.Mui-disabled):not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'var(--app-border-strong)',
-          },
+          '&:hover:not(.Mui-disabled):not(.Mui-focused) .MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: 'var(--app-border-strong)',
+            },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             borderWidth: '1px',
           },

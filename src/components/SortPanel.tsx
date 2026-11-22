@@ -1,6 +1,4 @@
 import {
-  Button,
-  ButtonGroup,
   FormControl,
   ListItemIcon,
   ListItemText,
@@ -13,6 +11,7 @@ import {
   sortIcons,
   directionIcons,
 } from '../constants/search.constants';
+import { DoubleButtonGroup, HalfButton } from './styled/doubleButtonGroup';
 
 interface SortPanelProps {
   reposTotalCount: number;
@@ -37,7 +36,7 @@ export function SortPanel({
       <div className="flex flex-row items-center justify-between gap-2">
         <span className="text-foreground-muted">Sort by:</span>
 
-        <FormControl sx={{ m: 0, minWidth: 214 }} size="small">
+        <FormControl sx={{ minWidth: 214 }} size="small">
           <Select
             id="demo-select-small"
             value={sortBy}
@@ -77,49 +76,28 @@ export function SortPanel({
           </Select>
         </FormControl>
 
-        <ButtonGroup
-          size="small"
-          aria-label="Sort direction"
-          sx={{
-            borderColor: 'var(--app-border)',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            '& .MuiButtonGroup-grouped': {
-              height: '100%',
-            },
-            '&:hover': {
-              borderColor: 'var(--app-border-strong)',
-            },
-          }}
-        >
+        <DoubleButtonGroup size="small" aria-label="Sort direction">
           {(Object.keys(directionIcons) as SortDirection[]).map((key) => {
             const Icon = directionIcons[key];
             const isSelected = key === direction;
             const backgroundColor = isSelected
-              ? 'primary.main'
-              : 'background.paper';
+              ? 'var(--app-primary)'
+              : 'var(--app-surface)';
             return (
-              <Button
+              <HalfButton
                 aria-label={key}
                 variant="contained"
-                sx={{
-                  bgcolor: backgroundColor,
-
-                  color: isSelected ? 'primary.contrastText' : 'text.primary',
-                  '&:hover': {
-                    bgcolor: backgroundColor,
-                    borderColor: 'var(--app-border-strong)',
-                  },
-                }}
+                backgroundColor={backgroundColor}
+                isSelected={isSelected}
                 onClick={() => {
                   onDirectionChange(key);
                 }}
               >
                 <Icon fontSize="small" />
-              </Button>
+              </HalfButton>
             );
           })}
-        </ButtonGroup>
+        </DoubleButtonGroup>
       </div>
     </div>
   );
