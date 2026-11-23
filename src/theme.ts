@@ -55,7 +55,18 @@ export const theme = createTheme({
     },
     MuiSelect: {
       styleOverrides: {
-        root: { backgroundColor: 'var(--app-surface)' },
+        root: {
+          backgroundColor: 'var(--app-surface)',
+          '& .MuiSelect-select .MuiListItemText-root': {
+            minWidth: 0,
+            overflow: 'hidden',
+          },
+          '& .MuiSelect-select .MuiListItemText-primary': {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          },
+        },
         select: { display: 'flex' },
       },
     },

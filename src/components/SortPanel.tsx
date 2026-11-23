@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   ListItemIcon,
   ListItemText,
@@ -12,6 +13,7 @@ import {
   directionIcons,
 } from '../constants/search.constants';
 import { DoubleButtonGroup, HalfButton } from './styled/doubleButtonGroup';
+import { smallViewportQuery } from '../constants/breakpoints';
 
 interface SortPanelProps {
   reposTotalCount: number;
@@ -29,14 +31,27 @@ export function SortPanel({
   onDirectionChange,
 }: SortPanelProps) {
   return (
-    <div className="flex flex-row justify-between">
+    <Box
+      className="flex justify-between"
+      sx={{
+        [`@media ${smallViewportQuery}`]: { flexDirection: 'column', gap: 1 },
+      }}
+    >
       <span className="inline-flex items-center text-foreground-muted">
         {reposTotalCount} repositories
       </span>
-      <div className="flex flex-row items-center justify-between gap-2">
-        <span className="text-foreground-muted">Sort by:</span>
+      <div className="flex min-w-0 flex-row items-center justify-between gap-2">
+        <span className="shrink-0 whitespace-nowrap text-foreground-muted">
+          Sort by:
+        </span>
 
-        <FormControl sx={{ minWidth: 214 }} size="small">
+        <FormControl
+          sx={{
+            minWidth: 214,
+            [`@media ${smallViewportQuery}`]: { minWidth: 0, flex: 1 },
+          }}
+          size="small"
+        >
           <Select
             id="demo-select-small"
             value={sortBy}
@@ -97,6 +112,6 @@ export function SortPanel({
           })}
         </DoubleButtonGroup>
       </div>
-    </div>
+    </Box>
   );
 }

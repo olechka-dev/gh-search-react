@@ -1,5 +1,6 @@
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import { smallViewportQuery } from '../constants/breakpoints';
 
 export function SearchField({
   searchRepos,
@@ -28,6 +29,7 @@ export function SearchField({
         placeholder="Find repositories"
         type="search"
         size="small"
+        autoFocus
         fullWidth
         sx={{
           '& .MuiOutlinedInput-root': {
@@ -41,6 +43,7 @@ export function SearchField({
         size="small"
         sx={{
           width: '120px',
+          [`@media ${smallViewportQuery}`]: { width: '80px' },
           flexShrink: 0,
           fontSize: '16px',
           borderTopLeftRadius: 0,

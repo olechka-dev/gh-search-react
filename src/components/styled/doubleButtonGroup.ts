@@ -30,6 +30,7 @@ export const DoubleButtonGroup = styled(ButtonGroup)({
   borderColor: 'var(--app-border)',
   borderWidth: '1px',
   borderStyle: 'solid',
+  flexShrink: 0,
   '& .MuiButtonGroup-grouped': {
     height: '100%',
   },
